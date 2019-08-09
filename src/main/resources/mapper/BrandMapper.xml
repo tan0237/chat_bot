@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.espay.dao.BrandDao" >
+    <resultMap id="brandList" type="com.espay.pojo.Brand">
+        <id column="id" property="id" javaType="java.lang.Integer" jdbcType="INTEGER"></id>
+        <result column="brand_name" property="brand_name" javaType="java.lang.String" jdbcType="VARCHAR"></result>
+    </resultMap>
+
+    <select id="getBrandByName" parameterType="java.lang.String" resultType="com.espay.pojo.Brand">
+        select * from brand where brand_name = #{name}
+    </select>
+
+    <select id="getBrands" resultMap="brandList">
+        select * from brand
+    </select>
+
+    <insert id="addBrand" useGeneratedKeys="true" keyProperty="id" parameterType="com.espay.pojo.Brand">
+        insert into brand(id,brand_name) values (#{id},#{brand_name})
+    </insert>
+
+</mapper>

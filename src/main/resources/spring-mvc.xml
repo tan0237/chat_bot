@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context" xsi:schemaLocation="http://www.springframework.org/schema/beans 
+    http://www.springframework.org/schema/beans/spring-beans-4.0.xsd 
+    http://www.springframework.org/schema/context 
+    http://www.springframework.org/schema/context/spring-context-4.0.xsd 
+    http://www.springframework.org/schema/mvc 
+    http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
+   
+     <!-- 开启注解 -->
+    <mvc:annotation-driven>
+    <!--设置不使用默认的消息转换器-->
+    <mvc:message-converters register-defaults="false">
+        <!--配置spring的转换器-->
+        <bean class="org.springframework.http.converter.StringHttpMessageConverter" />
+
+        <bean class="org.springframework.http.converter.support.AllEncompassingFormHttpMessageConverter" />
+
+        <bean class="org.springframework.http.converter.ByteArrayHttpMessageConverter" />
+
+        <bean class="org.springframework.http.converter.BufferedImageHttpMessageConverter" />
+
+        <!--配置fastjson中实现HttpMessageConverter接口的转换器-->
+        <bean id="fastJsonHttpMessageConverter" class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter" >
+            <!--加入支持的媒体类型，返回contentType-->
+            <property name="supportedMediaTypes">
+                <list>
+                    <!--这里顺序不能反，一定要先写text/html，不然IE下会出现下载提示-->
+                    <value>text/html;charset=UTF-8</value>
+                    <value>application/json;charset=UTF-8</value>
+                </list>
+            </property>
+        </bean>
+    </mvc:message-converters>
+
+    </mvc:annotation-driven>
+    <!-- 扫描controller -->
+    <context:component-scan base-package="com.espay.controller" />
+
+    <!-- jsp视图配置 -->
+    <bean id="jspViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+       	<property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />
+		<property name="prefix" value="/WEB-INF/jsp/" />
+        <property name="suffix" value=".jsp" />
+    </bean>
+
+    <!-- 配置跨域 -->
+    <!-- <mvc:cors>
+        <mvc:mapping path="/**" allow-credentials="true" allowed-origins="http://192.168.99.122:8080"/>
+    </mvc:cors> -->
+
+    
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <mvc:exclude-mapping path="/user/login"/>
+            <mvc:exclude-mapping path="/brand/list"/>
+            <mvc:exclude-mapping path="/user/sendEmail"/>
+            <mvc:exclude-mapping path="/user/resetPass"/>
+            <mvc:exclude-mapping path="/user/email_unique"/>
+            <mvc:exclude-mapping path="/staff/onlineList"/>
+            <mvc:exclude-mapping path="/staff/submitEvaluate"/>
+            <mvc:exclude-mapping path="/robot/submit_form"/>
+            <bean class="com.espay.util.LoginInterceptor"></bean>
+        </mvc:interceptor>
+    </mvc:interceptors>
+
+</beans>
