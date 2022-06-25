@@ -19,7 +19,7 @@
         <log4j.version>1.2.17</log4j.version>
         <!-- mongodb版本号 -->
         <mongodb.java.driver>3.6.4</mongodb.java.driver>
-        <spring.data.mongodb>2.0.8.RELEASE</spring.data.mongodb>
+        <spring.data.mongodb>3.3.5</spring.data.mongodb>
     </properties>
 
     <dependencies>
